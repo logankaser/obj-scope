@@ -1,0 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   uvector.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkaser <lkaser@student.42.us.org>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/06 20:27:33 by lkaser            #+#    #+#             */
+/*   Updated: 2018/08/31 09:42:05 by lkaser           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdlib.h>
+#include <string.h>
+#include "uvector.h"
+
+void				ft_uvector_init(t_uvector *v, unsigned size)
+{
+	v->width = size;
+	v->data = malloc(size * 8);
+	v->capacity = 8;
+	v->length = 0;
+}
+
+void				ft_uvector_resize(t_uvector *v, unsigned size)
+{
+	uint8_t		*new;
+
+	if (size > v->length)
+	{
+		new = realloc(v->data, size * v->width);
+		v->data = new;
+		v->capacity = size;
+	}
+}
+
+void				ft_uvector_push(t_uvector *v, void *d)
+{
+	if (v->length < v->capacity)
+		memcpy(v->data + v->width * v->length++, d, v->width);
+	else
+	{
+		ft_uvector_resize(v, v->capacity * 2);
+		ft_uvector_push(v, d);
+	}
+}
+
+void				*ft_uvector_pop(t_uvector *v, void *item)
+{
+	if (v->length == 0)
+		return (NULL);
+	if (item == NULL)
+		item = malloc(v->width);
+	if (item)
+		memcpy(item, v->data + v->width * --v->length, v->width);
+	return (item);
+}
+
+void				*ft_uvector_get(t_uvector *v, unsigned i, char copy)
+{
+	void *item;
+
+	if (i > v->length - 1)
+		return (NULL);
+	item = v->data + v->width * i;
+	if (copy)
+		item = malloc(v->width);
+		memcpy(item, v->data + v->width * i, v->width);
+	return (item);
+}

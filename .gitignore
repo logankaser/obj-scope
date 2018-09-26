@@ -1,0 +1,13 @@
+index.js
+index.wasm
+index.data
+obj
+.DS*
+.nfs*
+._*
+*.bc
+*.o
+*.a
+*.dSYM
+*.d
+*.swp

@@ -1,0 +1,547 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"GL",
+				"GLuint"
+			],
+			[
+				"val",
+				"validate_program(int program)\tvoid"
+			],
+			[
+				"sh",
+				"shader_str\tchar *"
+			],
+			[
+				"sha",
+				"shader_file\tFILE *"
+			],
+			[
+				"SEEK",
+				"SEEK_END\tMacro"
+			],
+			[
+				"st_s",
+				"st_size\toff_t"
+			],
+			[
+				"shader_",
+				"shader_source\tchar *"
+			],
+			[
+				"raw_",
+				"raw_vert\tt_uvector"
+			],
+			[
+				"raw",
+				"raw_uv\tt_uvector"
+			],
+			[
+				"ft_",
+				"ft_uvector_pop(t_uvector *v, void *item)\tvoid *"
+			],
+			[
+				"V",
+				"V3(x, y, z)\tMacro"
+			],
+			[
+				"t_vec",
+				"t_vec3\tTypedef"
+			],
+			[
+				"ft_vec",
+				"ft_vector_push(t_vector *v, void *d)\tvoid"
+			],
+			[
+				"ft_u",
+				"ft_uvector_init(t_uvector *v)\tvoid"
+			],
+			[
+				"pas",
+				"password"
+			],
+			[
+				"u",
+				"user"
+			],
+			[
+				"url",
+				"url_for"
+			],
+			[
+				"form",
+				"form_required"
+			],
+			[
+				"for",
+				"form_required"
+			],
+			[
+				"m",
+				"message"
+			],
+			[
+				"re",
+				"required\tAttr"
+			],
+			[
+				"in",
+				"input\tTag"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/main.c",
+			"settings":
+			{
+				"buffer_size": 4559,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "assets/vert.glsl",
+			"settings":
+			{
+				"buffer_size": 277,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "assets/frag.glsl",
+			"settings":
+			{
+				"buffer_size": 143,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					""
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					"Clean"
+				]
+			],
+			[
+				"Packages/Makefile/Make.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Makefile/Make.sublime-build",
+					""
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					"Clean"
+				]
+			],
+			[
+				"Packages/Makefile/Make.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: List Packages"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 136.0,
+		"history":
+		[
+			"os.system(\"~/emsdk/emsdk_env.sh\")",
+			"os.system(\"~/emsdk/emsdk_env.shs\")",
+			"os.system(\"~/emsdk/emsdk_env.sh\")",
+			"os.system(\"ls\")",
+			"import os",
+			"os.system(\"ls\")",
+			"ls",
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/fyrn/Projects/scop",
+		"/Users/fyrn/Projects/scop/assets",
+		"/Users/fyrn/Projects/scop/src"
+	],
+	"file_history":
+	[
+		"/Users/fyrn/Downloads/ogl-master/tutorial08_basic_shading/StandardShading.vertexshader",
+		"/Users/fyrn/Downloads/ogl-master/tutorial05_textured_cube/tutorial05.cpp",
+		"/Users/fyrn/Projects/webasm/src/main.cpp",
+		"/Users/fyrn/Projects/intra/intra/commands.py",
+		"/Users/fyrn/Projects/scop/assets/frag.glsl",
+		"/Users/fyrn/Downloads/ogl-master/tutorial08_basic_shading/StandardShading.fragmentshader",
+		"/Users/fyrn/Projects/scop/assets/vert.glsl",
+		"/Users/fyrn/Projects/intra/emails",
+		"/Users/fyrn/Projects/golf/g.c",
+		"/Users/fyrn/Projects/scop/src/uvector.c",
+		"/Users/fyrn/Projects/scop/src/uvector.h",
+		"/Users/fyrn/Downloads/ogl-master/tutorial07_model_loading/tutorial07.cpp",
+		"/Users/fyrn/Downloads/ogl-master/common/objloader.cpp",
+		"/Users/fyrn/Projects/scop/assets/test.obj",
+		"/Users/fyrn/Downloads/ogl-master/common/vboindexer.cpp",
+		"/Users/fyrn/Projects/scop/src/matrix.h",
+		"/Users/fyrn/Projects/scop/src/matrix.c",
+		"/Users/fyrn/Projects/scop/src/vec.c",
+		"/Users/fyrn/Projects/scop/src/vec_op.c",
+		"/Users/fyrn/Projects/scop/Makefile",
+		"/Users/fyrn/Projects/scop/assets/test",
+		"/Users/fyrn/Projects/scop/src/camera.c",
+		"/Users/fyrn/Projects/scop/src/main.c",
+		"/Users/fyrn/Projects/scop/libft/includes/ft_printf.h",
+		"/Users/fyrn/Projects/webasm/index.html",
+		"/Users/fyrn/Projects/webasm/Makefile",
+		"/Users/fyrn/Projects/webasm/assets/test",
+		"/Users/fyrn/Projects/webasm/assets",
+		"/Users/fyrn/Projects/webasm/resources",
+		"/Users/fyrn/Projects/webasm/index.wasm",
+		"/Users/fyrn/Projects/ford_the_win/server/app_server/templates/layout.html",
+		"/Users/fyrn/Projects/webasm/index.js",
+		"/Users/fyrn/Projects/bomberman/Makefile",
+		"/Users/fyrn/Projects/scop/libft/includes/libft.h",
+		"/Users/fyrn/Projects/scop/libft/Makefile",
+		"/Users/fyrn/Library/Application Support/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
+		"/Users/fyrn/Library/Application Support/Sublime Text 3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/Users/fyrn/Projects/ford_the_win/server/app_server/models.py",
+		"/Users/fyrn/Projects/ford_the_win/server/app_server/templates/register.html",
+		"/Users/fyrn/Projects/ford_the_win/server/venv/lib/python3.7/site-packages/pip/_internal/download.py",
+		"/Users/fyrn/Projects/ford_the_win/server/app_server/templates/form.html",
+		"/Users/fyrn/Projects/ford_the_win/client/vehicle_client/models.py",
+		"/Users/fyrn/Projects/ford_the_win/client/vehicle_client/__init__.py",
+		"/Users/fyrn/Projects/ford_the_win/server/run.sh",
+		"/Users/fyrn/Projects/ford_the_win/server/app_server/admin.py",
+		"/Users/fyrn/Projects/ford_the_win/README.md",
+		"/Users/fyrn/Projects/ford_the_win/car/MANIFEST.in",
+		"/Users/fyrn/Projects/ford_the_win/client/car/templates/index.html",
+		"/Users/fyrn/Projects/ford_the_win/client/car/templates/layout.html",
+		"/Users/fyrn/Projects/ford_the_win/client/car/__init__.py",
+		"/Users/fyrn/Projects/ford_the_win/client/setup.py",
+		"/Users/fyrn/Projects/ford_the_win/client/car/local.py",
+		"/Users/fyrn/Projects/pollon/templates/_beginPage.mu",
+		"/Users/fyrn/Projects/camagru/templates/index.hbs",
+		"/Users/fyrn/Projects/camagru/templates/base.hbs",
+		"/Users/fyrn/Projects/nostromo/app/templates/structure.html",
+		"/Users/fyrn/Projects/nostromo/app/templates/base.html",
+		"/Users/fyrn/Projects/ford_the_win/client/MANIFEST.in",
+		"/Users/fyrn/Projects/ford_the_win/.gitignore",
+		"/Users/fyrn/Projects/ford_the_win/client/config.py"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"VertexShaderID",
+			"ProgramID",
+			"vert",
+			"point"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"vert_id",
+			"program_id",
+			"vert_pos",
+			"vert"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/main.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4559,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4491,
+								4491
+							]
+						],
+						"settings":
+						{
+							"SL.552.region_keys":
+							[
+								"SL.clang.Highlights.|f606dbff35005c4c471d140824d220e44d40d6d7c4013068f9bdca1f433b4615|region.redish markup.error.sublime_linter|32",
+								"sublime_linter.protected_regions",
+								"SL.clang.Gutter.|region.redish markup.error.sublime_linter|dot"
+							],
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1451.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "assets/vert.glsl",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 277,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								242,
+								242
+							]
+						],
+						"settings":
+						{
+							"SL.560.region_keys":
+							[
+							],
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "assets/frag.glsl",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 143,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								94,
+								94
+							]
+						],
+						"settings":
+						{
+							"SL.569.region_keys":
+							[
+							],
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.SublimeLinter Messages":
+	{
+		"height": 108.0
+	},
+	"output.cc":
+	{
+		"height": 208.0
+	},
+	"output.exec":
+	{
+		"height": 108.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/Makefile/Make.sublime-build",
+	"project": "scop.sublime-project",
+	"replace":
+	{
+		"height": 70.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 224.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
