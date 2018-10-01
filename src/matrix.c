@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "matrix.h"
 
-t_mat		*mat_new(int order)
+t_mat		*mat_new(int order, char id)
 {
 	t_mat	*new;
 	int		i;
@@ -27,7 +27,7 @@ t_mat		*mat_new(int order)
 	{
 		j = -1;
 		while (++j < order)
-			new->m[i][j] = i == j;
+			new->m[i][j] = i == j && id;
 	}
 	return (new);
 }
@@ -51,9 +51,10 @@ t_mat		*mat_x_mat(const t_mat *a, const t_mat *b)
 	int			order;
 	t_mat		*product;
 
-	if ((order = a->order) != b->order)
+	if (a->order != b->order)
 		return (NULL);
-	product = mat_new(order);
+	order = a->order;
+	product = mat_new(order, 0);
 	i = -1;
 	while (++i < order)
 	{

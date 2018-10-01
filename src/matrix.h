@@ -13,6 +13,7 @@
 #ifndef MATRIX_H
 # define MATRIX_H
 
+# include <math.h>
 # define RGB(r,g,b) ((b) + ((g) << 8) + ((r) << 16))
 # define V2(x,y) ((t_vec2){x,y})
 # define V3(x,y,z) ((t_vec3){x,y,z})
@@ -42,7 +43,7 @@ typedef struct		s_mat
 	float			m[4][4];
 }					t_mat;
 
-t_mat				*mat_new(int order);
+t_mat				*mat_new(int order, char id);
 void				mat_del(t_mat *m);
 t_mat				*mat_x_mat(const t_mat *a, const t_mat *b);
 void				mat_inverse(const t_mat *m, t_mat *r);

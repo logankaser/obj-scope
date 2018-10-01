@@ -11,9 +11,7 @@ out vec3 norm;
 
 void	main()
 {
-
 	gl_Position = MVP * vec4(vert_pos, 1);
-	gl_Position.xyz *= 0.2;
-	uv = vert_uv;// normalize(fract(sin(vert_norm * 0.21525) * 176.24124)).xy;
+	uv = vert_uv;
 	norm = vert_norm;
 }
