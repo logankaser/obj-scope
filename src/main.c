@@ -28,10 +28,10 @@
 
 void print_matrix(t_mat *m)
 {
-	printf("%.3f, %.3f, %.3f, %.3f\n", m->m[0][0], m->m[0][1], m->m[0][2], m->m[0][3]);
-	printf("%.3f, %.3f, %.3f, %.3f\n", m->m[1][0], m->m[1][1], m->m[1][2], m->m[1][3]);
-	printf("%.3f, %.3f, %.3f, %.3f\n", m->m[2][0], m->m[2][1], m->m[2][2], m->m[2][3]);
-	printf("%.3f, %.3f, %.3f, %.3f\n\n", m->m[3][0], m->m[3][1], m->m[3][2], m->m[3][3]);
+	printf("%+.3f, %+.3f, %+.3f, %+.3f\n", m->m[0][0], m->m[0][1], m->m[0][2], m->m[0][3]);
+	printf("%+.3f, %+.3f, %+.3f, %+.3f\n", m->m[1][0], m->m[1][1], m->m[1][2], m->m[1][3]);
+	printf("%+.3f, %+.3f, %+.3f, %+.3f\n", m->m[2][0], m->m[2][1], m->m[2][2], m->m[2][3]);
+	printf("%+.3f, %+.3f, %+.3f, %+.3f\n\n", m->m[3][0], m->m[3][1], m->m[3][2], m->m[3][3]);
 }
 
 void translate_matrix(double x, double y, double z, t_mat *mat)
@@ -51,9 +51,13 @@ void translate_matrix(double x, double y, double z, t_mat *mat)
 
 void	render(t_scop *scop)
 {
+	static int i = 0;
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	translate_matrix(0.001, 0.0, 0.01, &scop->camera);
-	glUniformMatrix4fv(scop->mvp_id, 1, GL_FALSE, (GLfloat*)scop->camera.m);
+	translate_matrix(0.00, 0.0, -0.001, &scop->proj);
+	if (i++ % 60 == 0)
+		print_matrix(&scop->proj);
+	glUniformMatrix4fv(scop->mvp_id, 1, GL_FALSE, (GLfloat*)scop->proj.m);
 	glDrawArrays(GL_TRIANGLES, 0, scop->vert_count);
 }
 
@@ -212,17 +216,22 @@ int		main(void)
 
 	t_scop *scop = malloc(sizeof(t_scop));
 	scop->mvp_id = glGetUniformLocation(prog, "MVP");
-	scop->camera.order = 4;
+	scop->proj.order = 4;
+	scop->view.order = 4;
+	scop->MVP.order = 4;
 
 	// VAO
 	glGenVertexArrays(1, &scop->vao_id);
 	// Enable VAO
 	glBindVertexArray(scop->vao_id);
 	open_obj(scop);
-	MAT_ROW(scop->camera.m[0], 1, 0, 0, 0);
-	MAT_ROW(scop->camera.m[1], 0, 1, 0, 0);
-	MAT_ROW(scop->camera.m[2], 0, 0, 1, 0);
-	MAT_ROW(scop->camera.m[3], 0, 0, -1, 1);
+	MAT_ROW(scop->proj.m[0], 2.39012, 0, 0, 0);
+	MAT_ROW(scop->proj.m[1], 0, 1.79259, 0, 0);
+	MAT_ROW(scop->proj.m[2], 0, 0, -1.002, -1);
+	MAT_ROW(scop->proj.m[3], 0, 0, -0.2002, 0);
+
+	const float* p = (float*)scop->proj.m;
+	printf("%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %F\n", p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
 	emscripten_set_main_loop_arg((em_arg_callback_func)render, scop, -1, 0);
 	return (0);
 }

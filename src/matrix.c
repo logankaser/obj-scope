@@ -12,6 +12,7 @@
 
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 #include "matrix.h"
 
 t_mat		*mat_new(int order, char id)
@@ -43,7 +44,7 @@ void		mat_del(t_mat *m)
 	free(m);
 }
 
-t_mat		*mat_x_mat(const t_mat *a, const t_mat *b)
+t_mat		*mat_x_mat(const t_mat *b, const t_mat *a)
 {
 	int			i;
 	int			j;
@@ -67,6 +68,33 @@ t_mat		*mat_x_mat(const t_mat *a, const t_mat *b)
 		}
 	}
 	return (product);
+}
+
+void		mat_x_mat_ip(const t_mat *b, const t_mat *a, t_mat *product)
+{
+	int			i;
+	int			j;
+	int			k;
+	int			order;
+
+	bzero(&product->m, sizeof(float) * 4 * 4);
+	if (a->order != b->order || b->order != product->order)
+	{
+		product = NULL;
+		return;
+	}
+	order = a->order;
+	i = -1;
+	while (++i < order)
+	{
+		j = -1;
+		while (++j < order)
+		{
+			k = -1;
+			while (++k < order)
+				product->m[i][j] += a->m[i][k] * b->m[k][j];
+		}
+	}
 }
 
 static void	mat_reduce(float tmp[4][8], int pivot, int order)

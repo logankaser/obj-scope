@@ -12,5 +12,5 @@ out vec3 color;
 void	main()
 {
 //	color = texture(tex, uv).rgb;
-	color = vec3(1, 1, 1) * clamp(dot(norm, vec3(1)), 0.0, 1.0);
+	color = vec3(1, 1, 1) * max(dot(norm, vec3(0,0,1)), 0.1);
 }
