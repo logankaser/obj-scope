@@ -46,6 +46,8 @@ typedef struct		s_mat
 t_mat				*mat_new(int order, char id);
 void				mat_del(t_mat *m);
 t_mat				*mat_x_mat(const t_mat *a, const t_mat *b);
+void				mat_x_mat_res(
+	const t_mat *b, const t_mat *a, t_mat *product);
 void				mat_inverse(const t_mat *m, t_mat *r);
 
 t_vec3				vec3_x_mat(t_vec3 v, t_mat *m);

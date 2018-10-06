@@ -70,7 +70,7 @@ t_mat		*mat_x_mat(const t_mat *b, const t_mat *a)
 	return (product);
 }
 
-void		mat_x_mat_ip(const t_mat *b, const t_mat *a, t_mat *product)
+void		mat_x_mat_res(const t_mat *b, const t_mat *a, t_mat *product)
 {
 	int			i;
 	int			j;
@@ -78,12 +78,7 @@ void		mat_x_mat_ip(const t_mat *b, const t_mat *a, t_mat *product)
 	int			order;
 
 	bzero(&product->m, sizeof(float) * 4 * 4);
-	if (a->order != b->order || b->order != product->order)
-	{
-		product = NULL;
-		return;
-	}
-	order = a->order;
+	order = product->order;
 	i = -1;
 	while (++i < order)
 	{

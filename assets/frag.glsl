@@ -11,6 +11,9 @@ out vec3 color;
 
 void	main()
 {
-//	color = texture(tex, uv).rgb;
-	color = vec3(1, 1, 1) * max(dot(norm, vec3(0,0,1)), 0.1);
+	//color = texture(tex, uv).rgb;
+
+	vec3 n = normalize(norm);
+	float cos_theta = dot(n, vec3(0,0,1));
+	color = vec3(1, 1, 1) * max(abs(cos_theta), 0.15);
 }

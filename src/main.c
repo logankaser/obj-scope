@@ -34,19 +34,13 @@ void print_matrix(t_mat *m)
 	printf("%+.3f, %+.3f, %+.3f, %+.3f\n\n", m->m[3][0], m->m[3][1], m->m[3][2], m->m[3][3]);
 }
 
-void translate_matrix(double x, double y, double z, t_mat *mat)
+void translation_matrix(double x, double y, double z, t_mat *mat)
 {
-	t_mat	trans;
-	t_mat	*res;
-
-	trans.order = 4;
-	MAT_ROW(trans.m[0], 1, 0, 0, 0);
-	MAT_ROW(trans.m[1], 0, 1, 0, 0);
-	MAT_ROW(trans.m[2], 0, 0, 1, 0);
-	MAT_ROW(trans.m[3], x, y, z, 1);
-	res = mat_x_mat(mat, &trans);
-	memcpy(&mat->m, &res->m, sizeof(float) * 4 * 4);
-	free(res);
+	mat->order = 4;
+	MAT_ROW(mat->m[0], 1, 0, 0, 0);
+	MAT_ROW(mat->m[1], 0, 1, 0, 0);
+	MAT_ROW(mat->m[2], 0, 0, 1, 0);
+	MAT_ROW(mat->m[3], x, y, z, 1);
 }
 
 void	render(t_scop *scop)
@@ -54,10 +48,14 @@ void	render(t_scop *scop)
 	static int i = 0;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	translate_matrix(0.00, 0.0, -0.001, &scop->proj);
+	translation_matrix(0.0, 0.0, -4, &scop->trans);
+	glUniformMatrix4fv(scop->trans_id, 1, GL_FALSE, (GLfloat*)scop->trans.m);
+	mat_x_mat_res(&scop->proj, &scop->trans, &scop->tp);
 	if (i++ % 60 == 0)
-		print_matrix(&scop->proj);
-	glUniformMatrix4fv(scop->mvp_id, 1, GL_FALSE, (GLfloat*)scop->proj.m);
+	{
+		//print_matrix(&scop->tp);
+	}
+	glUniformMatrix4fv(scop->tp_id, 1, GL_FALSE, (GLfloat*)scop->tp.m);
 	glDrawArrays(GL_TRIANGLES, 0, scop->vert_count);
 }
 
@@ -154,7 +152,7 @@ static void open_obj(t_scop *scop)
 	FILE		*obj_file;
 	GLuint		buffer_id[3];
 
-	if ((obj_file = fopen("assets/cube.obj", "r")) == NULL)
+	if ((obj_file = fopen("assets/monkey_fancy.obj", "r")) == NULL)
 		perror("File error");
 	ft_uvector_init(&vert, sizeof(t_vec3));
 	ft_uvector_init(&uv, sizeof(t_vec2));
@@ -162,13 +160,13 @@ static void open_obj(t_scop *scop)
 	load_obj(obj_file, &vert, &uv, &norm);
 	fclose(obj_file);
 	scop->vert_count = vert.length;
-	t_vec3	tmp;
+	//t_vec3	tmp;
 	//t_vec2	tmp_uv;
-	for (unsigned i = 0; i < vert.length; ++i)
-	{
-		tmp = *(t_vec3*)ft_uvector_get(&vert, i, 0);
-		printf("v(%+.3f,%+.3f,%+.3f)\n", tmp.x, tmp.y, tmp.z);
-	}
+	//for (unsigned i = 0; i < norm.length; ++i)
+	//{
+	//	tmp = *(t_vec3*)ft_uvector_get(&norm, i, 0);
+	//	printf("v(%+.3f,%+.3f,%+.3f)\n", tmp.x, tmp.y, tmp.z);
+	//}
 	//while (ft_uvector_pop(&uv, &tmp_uv))
 	//	printf("u(%+.3f,%+.3f) ", tmp_uv.x, tmp_uv.y);
 	//while (ft_uvector_pop(&norm, &tmp))
@@ -180,20 +178,21 @@ static void open_obj(t_scop *scop)
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[0]);
 	glBufferData(GL_ARRAY_BUFFER, vert.length * 3 * sizeof(float),
 	vert.data, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[1]);
 	glBufferData(GL_ARRAY_BUFFER, uv.length * 2 * sizeof(float),
 	uv.data, GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
 
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[2]);
 	glBufferData(GL_ARRAY_BUFFER, norm.length * 3 * sizeof(float),
 	norm.data, GL_STATIC_DRAW);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 int		main(void)
@@ -215,10 +214,11 @@ int		main(void)
 	glUseProgram(prog);
 
 	t_scop *scop = malloc(sizeof(t_scop));
-	scop->mvp_id = glGetUniformLocation(prog, "MVP");
+	scop->tp_id = glGetUniformLocation(prog, "TP");
+	scop->trans_id = glGetUniformLocation(prog, "T");
 	scop->proj.order = 4;
-	scop->view.order = 4;
-	scop->MVP.order = 4;
+	scop->trans.order = 4;
+	scop->tp.order = 4;
 
 	// VAO
 	glGenVertexArrays(1, &scop->vao_id);
@@ -230,8 +230,11 @@ int		main(void)
 	MAT_ROW(scop->proj.m[2], 0, 0, -1.002, -1);
 	MAT_ROW(scop->proj.m[3], 0, 0, -0.2002, 0);
 
-	const float* p = (float*)scop->proj.m;
-	printf("%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %F\n", p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
+	MAT_ROW(scop->trans.m[0], 1, 0, 0, 0);
+	MAT_ROW(scop->trans.m[1], 0, 1, 0, 0);
+	MAT_ROW(scop->trans.m[2], 0, 0, 1, 0);
+	MAT_ROW(scop->trans.m[3], 0, 0, 0, 1);
+	memcpy(&scop->tp.m, &scop->proj.m, sizeof(float) * 16);
 	emscripten_set_main_loop_arg((em_arg_callback_func)render, scop, -1, 0);
 	return (0);
 }

@@ -5,12 +5,13 @@
 
 typedef struct		s_scop
 {
-	GLuint			mvp_id;
+	GLuint			tp_id;
+	GLuint			trans_id;
 	GLuint			vao_id;
 	unsigned		vert_count;
 	t_mat			proj;
 	t_mat			trans;
-	t_mat			TP;
+	t_mat			tp;
 }					t_scop;
 
 #endif
