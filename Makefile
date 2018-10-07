@@ -11,7 +11,10 @@
 # **************************************************************************** #
 
 NAME = index.js
-LIST = uvector matrix vec vec_op main obj_vertex_data obj_elements
+LIST = uvector \
+matrix matrix_transform \
+vec vec_op \
+main obj_vertex_data obj_elements
 
 SRC_DIR = src
 OBJ_DIR = obj

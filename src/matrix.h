@@ -62,6 +62,10 @@ void				vec3_mult(t_vec3 *v, float m);
 void				vec3_div(t_vec3 *v, float d);
 float				vec3_dot(t_vec3 *a, t_vec3 *b);
 
-void				look_at(t_vec3 from, t_vec3 to, t_mat *cam);
+void				mat_translate(float x, float y, float z, t_mat *mat);
+
+void				mat_rotate_x(float degree, t_mat *mat);
+void				mat_rotate_y(float degree, t_mat *mat);
+void				mat_rotate_z(float degree, t_mat *mat);
 
 #endif

@@ -26,35 +26,20 @@
 #include "obj.h"
 #include "scop.h"
 
-void print_matrix(t_mat *m)
-{
-	printf("%+.3f, %+.3f, %+.3f, %+.3f\n", m->m[0][0], m->m[0][1], m->m[0][2], m->m[0][3]);
-	printf("%+.3f, %+.3f, %+.3f, %+.3f\n", m->m[1][0], m->m[1][1], m->m[1][2], m->m[1][3]);
-	printf("%+.3f, %+.3f, %+.3f, %+.3f\n", m->m[2][0], m->m[2][1], m->m[2][2], m->m[2][3]);
-	printf("%+.3f, %+.3f, %+.3f, %+.3f\n\n", m->m[3][0], m->m[3][1], m->m[3][2], m->m[3][3]);
-}
-
-void translation_matrix(double x, double y, double z, t_mat *mat)
-{
-	mat->order = 4;
-	MAT_ROW(mat->m[0], 1, 0, 0, 0);
-	MAT_ROW(mat->m[1], 0, 1, 0, 0);
-	MAT_ROW(mat->m[2], 0, 0, 1, 0);
-	MAT_ROW(mat->m[3], x, y, z, 1);
-}
-
 void	render(t_scop *scop)
 {
-	static int i = 0;
-
+	static float x = 0.0;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	translation_matrix(0.0, 0.0, -4, &scop->trans);
+	MAT_ROW(scop->trans.m[0], 1, 0, 0, 0);
+	MAT_ROW(scop->trans.m[1], 0, 1, 0, 0);
+	MAT_ROW(scop->trans.m[2], 0, 0, 1, 0);
+	MAT_ROW(scop->trans.m[3], 0, 0, 0, 1);
+	mat_rotate_x((x += 0.3), &scop->trans);
+	mat_rotate_y(-(x += 0.3), &scop->trans);
+	mat_rotate_z(-(x += 0.3), &scop->trans);
+	mat_translate(0.0, 0.0, -4, &scop->trans);
 	glUniformMatrix4fv(scop->trans_id, 1, GL_FALSE, (GLfloat*)scop->trans.m);
 	mat_x_mat_res(&scop->proj, &scop->trans, &scop->tp);
-	if (i++ % 60 == 0)
-	{
-		//print_matrix(&scop->tp);
-	}
 	glUniformMatrix4fv(scop->tp_id, 1, GL_FALSE, (GLfloat*)scop->tp.m);
 	glDrawArrays(GL_TRIANGLES, 0, scop->vert_count);
 }
@@ -152,7 +137,7 @@ static void open_obj(t_scop *scop)
 	FILE		*obj_file;
 	GLuint		buffer_id[3];
 
-	if ((obj_file = fopen("assets/monkey_fancy.obj", "r")) == NULL)
+	if ((obj_file = fopen("assets/cube.obj", "r")) == NULL)
 		perror("File error");
 	ft_uvector_init(&vert, sizeof(t_vec3));
 	ft_uvector_init(&uv, sizeof(t_vec2));
@@ -209,7 +194,7 @@ int		main(void)
 	emscripten_webgl_make_context_current(context);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	glClearColor(0.4,  0.1,  0.1,  1);
+	glClearColor(0.1,  0.4,  0.1,  1);
 	GLuint prog = make_program("assets/frag.glsl", "assets/vert.glsl");
 	glUseProgram(prog);
 

@@ -15,5 +15,5 @@ void	main()
 
 	vec3 n = normalize(norm);
 	float cos_theta = dot(n, vec3(0,0,1));
-	color = vec3(1, 1, 1) * max(abs(cos_theta), 0.15);
+	color = vec3(1, 0, 1) * max(abs(cos_theta), 0.15);
 }
