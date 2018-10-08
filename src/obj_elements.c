@@ -16,7 +16,7 @@ void		load_obj(FILE *obj_file,
 	line = read_obj(obj_file, &raw_vert, &raw_uv, &raw_norm);
 	while (read_line(obj_file, &line) > 0)
 	{
-		if (!strncmp(line, "#", 1) || strncmp(line, "f ", 2))
+		if (strncmp(line, "f ", 2))
 			continue;
 		sscanf(line, "f %i/%i/%i %i/%i/%i %i/%i/%i\n", TRIANGLE);
 		ft_uvector_push(vert, ft_uvector_get(&raw_vert, i[0] - 1, 0));

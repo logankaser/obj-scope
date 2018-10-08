@@ -50,16 +50,19 @@ void		*read_obj(FILE *obj_file,
 	line = NULL;
 	while (read_line(obj_file, &line) > 0)
 	{
-		if (!strncmp(line, "#", 1))
+		if (*line == '#' || *line == 'o' || *line == '\n')
 			continue ; 
-		if (!strncmp(line, "f ", 2))
-			break ;
-		if (!strncmp(line, "v ", 2))
+		else if (!strncmp(line, "v ", 2))
 			parse_vertex(line, raw_vert);
 		else if (!strncmp(line, "vt ", 3))
 			parse_uv(line, raw_uv);
 		else if (!strncmp(line, "vn ", 3))
 			parse_normal(line, raw_norm);
+		else
+		{
+			fseek(obj_file, -strlen(line), SEEK_CUR);
+			break ;
+		}
 	}
 	return (NULL);
 }

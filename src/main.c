@@ -34,9 +34,9 @@ void	render(t_scop *scop)
 	MAT_ROW(scop->trans.m[1], 0, 1, 0, 0);
 	MAT_ROW(scop->trans.m[2], 0, 0, 1, 0);
 	MAT_ROW(scop->trans.m[3], 0, 0, 0, 1);
-	mat_rotate_x((x += 0.3), &scop->trans);
-	mat_rotate_y(-(x += 0.3), &scop->trans);
-	mat_rotate_z(-(x += 0.3), &scop->trans);
+	mat_rotate_x((x += 0.2), &scop->trans);
+	mat_rotate_y((x += 0.2) * 2, &scop->trans);
+	mat_rotate_z(-(x += 0.2) * 0.5, &scop->trans);
 	mat_translate(0.0, 0.0, -4, &scop->trans);
 	glUniformMatrix4fv(scop->trans_id, 1, GL_FALSE, (GLfloat*)scop->trans.m);
 	mat_x_mat_res(&scop->proj, &scop->trans, &scop->tp);
@@ -137,7 +137,7 @@ static void open_obj(t_scop *scop)
 	FILE		*obj_file;
 	GLuint		buffer_id[3];
 
-	if ((obj_file = fopen("assets/cube.obj", "r")) == NULL)
+	if ((obj_file = fopen("assets/monkey_fancy.obj", "r")) == NULL)
 		perror("File error");
 	ft_uvector_init(&vert, sizeof(t_vec3));
 	ft_uvector_init(&uv, sizeof(t_vec2));
@@ -172,12 +172,24 @@ static void open_obj(t_scop *scop)
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[2]);
 	glBufferData(GL_ARRAY_BUFFER, norm.length * 3 * sizeof(float),
 	norm.data, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glGenTextures(1, &scop->tex_id);
+	glBindTexture(GL_TEXTURE_2D, scop->tex_id);
+	uint8_t data[16] = {
+		255, 255, 100, 255,
+		255, 255, 100, 255,
+		42, 255, 100, 255,
+		47, 255, 109, 255
+	};
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 int		main(void)
@@ -193,8 +205,9 @@ int		main(void)
 	EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("canvas", &attrs);
 	emscripten_webgl_make_context_current(context);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 	glDepthFunc(GL_LESS);
-	glClearColor(0.1,  0.4,  0.1,  1);
+	glClearColor(0.1,  0.1,  0.12,  1);
 	GLuint prog = make_program("assets/frag.glsl", "assets/vert.glsl");
 	glUseProgram(prog);
 

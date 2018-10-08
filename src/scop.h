@@ -7,6 +7,7 @@ typedef struct		s_scop
 {
 	GLuint			tp_id;
 	GLuint			trans_id;
+	GLuint			tex_id;
 	GLuint			vao_id;
 	unsigned		vert_count;
 	t_mat			proj;
