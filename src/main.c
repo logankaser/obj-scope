@@ -28,16 +28,43 @@
 
 void	render(t_scop *scop)
 {
-	static float x = 0.0;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	MAT_ROW(scop->trans.m[0], 1, 0, 0, 0);
 	MAT_ROW(scop->trans.m[1], 0, 1, 0, 0);
 	MAT_ROW(scop->trans.m[2], 0, 0, 1, 0);
 	MAT_ROW(scop->trans.m[3], 0, 0, 0, 1);
-	mat_rotate_x((x += 0.2), &scop->trans);
-	mat_rotate_y((x += 0.2) * 2, &scop->trans);
-	mat_rotate_z(-(x += 0.2) * 0.5, &scop->trans);
-	mat_translate(0.0, 0.0, -4, &scop->trans);
+	if (scop->key['w'])
+		scop->rot.x += 0.5;
+	else if (scop->key['s'])
+		scop->rot.x -= 0.5;
+	if (scop->key['a'])
+		scop->rot.y += 0.5;
+	else if (scop->key['d'])
+		scop->rot.y -= 0.5;
+	if (scop->key['q'])
+		scop->rot.z += 0.5;
+	else if (scop->key['e'])
+		scop->rot.z -= 0.5;
+	mat_rotate_x(scop->rot.x, &scop->trans);
+	mat_rotate_y(scop->rot.y, &scop->trans);
+	mat_rotate_z(scop->rot.z, &scop->trans);
+
+
+
+	if (scop->key['j'])
+		scop->pos.x -= 0.01;
+	else if (scop->key['l'])
+		scop->pos.x += 0.01;
+	if (scop->key['i'])
+		scop->pos.y += 0.01;
+	else if (scop->key['k'])
+		scop->pos.y -= 0.01;
+	if (scop->key['='])
+		scop->pos.z += 0.01;
+	else if (scop->key['-'])
+		scop->pos.z -= 0.01;
+	mat_translate(scop->pos.x, scop->pos.y, scop->pos.z - 4.0, &scop->trans);
+
 	glUniformMatrix4fv(scop->trans_id, 1, GL_FALSE, (GLfloat*)scop->trans.m);
 	mat_x_mat_res(&scop->proj, &scop->trans, &scop->tp);
 	glUniformMatrix4fv(scop->tp_id, 1, GL_FALSE, (GLfloat*)scop->tp.m);
@@ -192,6 +219,26 @@ static void open_obj(t_scop *scop)
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
+EM_BOOL	key_down(int type, const EmscriptenKeyboardEvent* key, void* data)
+{
+	t_scop *scop;
+
+	scop = data;
+	(void)type;
+	scop->key[(uint8_t)key->key[0]] = 1;
+	return 0;
+}
+
+EM_BOOL	key_up(int type, const EmscriptenKeyboardEvent* key, void* data)
+{
+	t_scop *scop;
+
+	scop = data;
+	(void)type;
+	scop->key[(uint8_t)key->key[0]] = 0;
+	return 0;
+}
+
 int		main(void)
 {
 	EmscriptenWebGLContextAttributes attrs;
@@ -211,7 +258,7 @@ int		main(void)
 	GLuint prog = make_program("assets/frag.glsl", "assets/vert.glsl");
 	glUseProgram(prog);
 
-	t_scop *scop = malloc(sizeof(t_scop));
+	t_scop *scop = calloc(1, sizeof(t_scop));
 	scop->tp_id = glGetUniformLocation(prog, "TP");
 	scop->trans_id = glGetUniformLocation(prog, "T");
 	scop->proj.order = 4;
@@ -234,5 +281,8 @@ int		main(void)
 	MAT_ROW(scop->trans.m[3], 0, 0, 0, 1);
 	memcpy(&scop->tp.m, &scop->proj.m, sizeof(float) * 16);
 	emscripten_set_main_loop_arg((em_arg_callback_func)render, scop, -1, 0);
+
+	emscripten_set_keydown_callback("body", scop, 0, key_down);
+	emscripten_set_keyup_callback("body", scop, 0, key_up);
 	return (0);
 }

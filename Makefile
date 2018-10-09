@@ -28,8 +28,8 @@ CPPFLAGS = -Wall -Wextra -Werror \
 -O3 -s USE_WEBGL2=1 -s ALLOW_MEMORY_GROWTH=1 -s WASM=1 \
  $(INCLUDES)
 
-LDFLAGS = --llvm-lto 3 -O3 --closure 1 --preload-file assets
-#LDFLAGS = --preload-file assets
+#LDFLAGS = --llvm-lto 3 -O3 --closure 1 --preload-file assets --post-js src/texture.js
+LDFLAGS = --preload-file assets --post-js src/texture.js
 
 all: $(OBJ_DIR) $(NAME)
 
