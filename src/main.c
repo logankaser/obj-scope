@@ -42,9 +42,9 @@ void	render(t_scop *scop)
 	else if (scop->key['d'])
 		scop->rot.y -= 0.5;
 	if (scop->key['q'])
-		scop->rot.z += 0.5;
-	else if (scop->key['e'])
 		scop->rot.z -= 0.5;
+	else if (scop->key['e'])
+		scop->rot.z += 0.5;
 	mat_rotate_x(scop->rot.x, &scop->trans);
 	mat_rotate_y(scop->rot.y, &scop->trans);
 	mat_rotate_z(scop->rot.z, &scop->trans);
