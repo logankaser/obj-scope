@@ -50,7 +50,6 @@ void	render(t_scop *scop)
 	mat_rotate_z(scop->rot.z, &scop->trans);
 
 
-
 	if (scop->key['j'])
 		scop->pos.x -= 0.01;
 	else if (scop->key['l'])
@@ -156,7 +155,7 @@ GLuint	make_program(const char *frag, const char *vert)
 	return (program_id);
 }
 
-static void open_obj(t_scop *scop)
+static void obj_open(const char *path, t_scop *scop)
 {
 	t_uvector	vert;
 	t_uvector	uv;
@@ -164,13 +163,14 @@ static void open_obj(t_scop *scop)
 	FILE		*obj_file;
 	GLuint		buffer_id[3];
 
-	if ((obj_file = fopen("assets/monkey_fancy.obj", "r")) == NULL)
+	if ((obj_file = fopen(path, "r")) == NULL)
 		perror("File error");
 	ft_uvector_init(&vert, sizeof(t_vec3));
 	ft_uvector_init(&uv, sizeof(t_vec2));
 	ft_uvector_init(&norm, sizeof(t_vec3));
-	load_obj(obj_file, &vert, &uv, &norm);
+	obj_load(obj_file, &vert, &uv, &norm);
 	fclose(obj_file);
+	obj_normalize(&vert, &uv, &norm);
 	scop->vert_count = vert.length;
 	//t_vec3	tmp;
 	//t_vec2	tmp_uv;
@@ -269,7 +269,7 @@ int		main(void)
 	glGenVertexArrays(1, &scop->vao_id);
 	// Enable VAO
 	glBindVertexArray(scop->vao_id);
-	open_obj(scop);
+	obj_open("assets/monkey_fancy.obj", scop);
 	MAT_ROW(scop->proj.m[0], 2.39012, 0, 0, 0);
 	MAT_ROW(scop->proj.m[1], 0, 1.79259, 0, 0);
 	MAT_ROW(scop->proj.m[2], 0, 0, -1.002, -1);

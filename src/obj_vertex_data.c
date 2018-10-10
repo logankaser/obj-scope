@@ -39,7 +39,7 @@ int			read_line(FILE *file, char **line)
 	return (getline(line, &n, file));
 }
 
-void		*read_obj(FILE *obj_file,
+void		*obj_read(FILE *obj_file,
 	t_uvector *raw_vert, t_uvector *raw_uv, t_uvector *raw_norm)
 {
 	char	*line;

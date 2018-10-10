@@ -4,7 +4,7 @@
 
 #define TRIANGLE i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8
 
-void		load_obj(FILE *obj_file,
+void	obj_load(FILE *obj_file,
 	t_uvector *vert, t_uvector *uv, t_uvector *norm)
 {
 	t_uvector	raw_vert;
@@ -13,7 +13,7 @@ void		load_obj(FILE *obj_file,
 	char		*line;
 	int	i[9];
 
-	line = read_obj(obj_file, &raw_vert, &raw_uv, &raw_norm);
+	line = obj_read(obj_file, &raw_vert, &raw_uv, &raw_norm);
 	while (read_line(obj_file, &line) > 0)
 	{
 		if (strncmp(line, "f ", 2))
@@ -34,4 +34,11 @@ void		load_obj(FILE *obj_file,
 	free(raw_vert.data);
 	free(raw_uv.data);
 	free(raw_norm.data);
+}
+
+void	obj_normalize(t_uvector *vert, t_uvector *uv, t_uvector *norm)
+{
+	(void)vert;
+	(void)uv;
+	(void)norm;
 }
