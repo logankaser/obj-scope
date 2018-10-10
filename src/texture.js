@@ -16,4 +16,3 @@ window.onload = function() {
 		return false;
 	});
 };
-console.log("Loaded texture.js")
