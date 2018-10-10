@@ -35,15 +35,15 @@ void	render(t_scop *scop)
 	MAT_ROW(scop->trans.m[3], 0, 0, 0, 1);
 	if (scop->key['w'])
 		scop->rot.x += 0.5;
-	else if (scop->key['s'])
+	if (scop->key['s'])
 		scop->rot.x -= 0.5;
 	if (scop->key['a'])
 		scop->rot.y += 0.5;
-	else if (scop->key['d'])
+	if (scop->key['d'])
 		scop->rot.y -= 0.5;
 	if (scop->key['q'])
 		scop->rot.z -= 0.5;
-	else if (scop->key['e'])
+	if (scop->key['e'])
 		scop->rot.z += 0.5;
 	mat_rotate_x(scop->rot.x, &scop->trans);
 	mat_rotate_y(scop->rot.y, &scop->trans);
@@ -52,17 +52,17 @@ void	render(t_scop *scop)
 
 	if (scop->key['j'])
 		scop->pos.x -= 0.01;
-	else if (scop->key['l'])
+	if (scop->key['l'])
 		scop->pos.x += 0.01;
 	if (scop->key['i'])
 		scop->pos.y += 0.01;
-	else if (scop->key['k'])
+	if (scop->key['k'])
 		scop->pos.y -= 0.01;
 	if (scop->key['='])
 		scop->pos.z += 0.01;
-	else if (scop->key['-'])
+	if (scop->key['-'])
 		scop->pos.z -= 0.01;
-	mat_translate(scop->pos.x, scop->pos.y, scop->pos.z - 4.0, &scop->trans);
+	mat_translate(scop->pos.x, scop->pos.y, scop->pos.z - 2.0, &scop->trans);
 
 	glUniformMatrix4fv(scop->trans_id, 1, GL_FALSE, (GLfloat*)scop->trans.m);
 	mat_x_mat_res(&scop->proj, &scop->trans, &scop->tp);

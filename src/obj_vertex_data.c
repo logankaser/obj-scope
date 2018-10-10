@@ -39,6 +39,10 @@ int			read_line(FILE *file, char **line)
 	return (getline(line, &n, file));
 }
 
+/*
+** fseek line is to allow the next parsing function to read from where
+** this function stopped being able to parse, instead of losing that line.
+*/
 void		*obj_read(FILE *obj_file,
 	t_uvector *raw_vert, t_uvector *raw_uv, t_uvector *raw_norm)
 {
