@@ -5,38 +5,44 @@
 
 #define TRIANGLE i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8
 
+void	obj_read_face(t_uvector *vert, t_uvector *uv, t_uvector *norm)
+{
+	(void)vert;
+	(void)uv;
+	(void)norm;
+}
+
 void	obj_load(FILE *obj_file,
 	t_uvector *vert, t_uvector *uv, t_uvector *norm)
 {
-	t_uvector	raw_vert;
-	t_uvector	raw_uv;
-	t_uvector	raw_norm;
-	char		*line;
-	int	i[9];
+	t_uvector	vertexs[3];
+	t_uvector	faces;
+	int			*tmp;
 
-	line = obj_read(obj_file, &raw_vert, &raw_uv, &raw_norm);
-	while (read_line(obj_file, &line) > 0)
+	(void)uv;
+	(void)norm;
+
+	t_vec2 uv_default;
+	t_vec3 norm_default;
+
+	uv_default = V2(0, 0);
+	norm_default = V3(0, 0, 0);
+
+	obj_read(obj_file, vertexs, &faces);
+	for (unsigned i = 0; i < faces.length; ++i)
 	{
-		if (strncmp(line, "f ", 2))
-			continue;
-		sscanf(line, "f %i/%i/%i %i/%i/%i %i/%i/%i\n", TRIANGLE);
-		ft_uvector_push(vert, ft_uvector_get(&raw_vert, i[0] - 1, 0));
-		ft_uvector_push(uv, ft_uvector_get(&raw_uv, i[1] - 1, 0));
-		ft_uvector_push(norm, ft_uvector_get(&raw_norm, i[2] - 1, 0));
-		
-		ft_uvector_push(vert, ft_uvector_get(&raw_vert, i[3] - 1, 0));
-		ft_uvector_push(uv, ft_uvector_get(&raw_uv, i[4] - 1, 0));
-		ft_uvector_push(norm, ft_uvector_get(&raw_norm, i[5] - 1, 0));
-
-		ft_uvector_push(vert, ft_uvector_get(&raw_vert, i[6] - 1, 0));
-		ft_uvector_push(uv, ft_uvector_get(&raw_uv, i[7] - 1, 0));
-		ft_uvector_push(norm, ft_uvector_get(&raw_norm, i[8] - 1, 0));
+		tmp = ft_uvector_get(&faces, i, 0);
+		ft_uvector_push(vert, ft_uvector_get(vertexs, tmp[0] - 1, 0));
+		//ft_uvector_push(uv, ft_uvector_get(vertexs, tmp[1] - 1, 0));
+		//ft_uvector_push(norm, ft_uvector_get(vertexs, tmp[2] - 1, 0));
+		ft_uvector_push(uv, &uv_default);
+		ft_uvector_push(norm, &norm_default);
 	}
-	free(raw_vert.data);
-	free(raw_uv.data);
-	free(raw_norm.data);
+	free(vertexs[0].data);
+	free(vertexs[1].data);
+	free(vertexs[2].data);
+	free(faces.data);
 }
-
 
 void	obj_normalize(t_uvector *vert, t_uvector *uv, t_uvector *norm)
 {

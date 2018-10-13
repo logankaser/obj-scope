@@ -49,7 +49,6 @@ void	render(t_scop *scop)
 	mat_rotate_y(scop->rot.y, &scop->trans);
 	mat_rotate_z(scop->rot.z, &scop->trans);
 
-
 	if (scop->key['j'])
 		scop->pos.x -= 0.01;
 	if (scop->key['l'])
@@ -213,9 +212,11 @@ static void obj_open(const char *path, t_scop *scop)
 		42, 255, 100, 255,
 		47, 255, 109, 255
 	};
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+		GL_LINEAR_MIPMAP_LINEAR);
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
@@ -269,7 +270,7 @@ int		main(void)
 	glGenVertexArrays(1, &scop->vao_id);
 	// Enable VAO
 	glBindVertexArray(scop->vao_id);
-	obj_open("assets/monkey_fancy.obj", scop);
+	obj_open("assets/42.obj", scop);
 	MAT_ROW(scop->proj.m[0], 2.39012, 0, 0, 0);
 	MAT_ROW(scop->proj.m[1], 0, 1.79259, 0, 0);
 	MAT_ROW(scop->proj.m[2], 0, 0, -1.002, -1);
