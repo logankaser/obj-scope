@@ -26,6 +26,6 @@ void				ft_uvector_init(t_uvector *v, unsigned size);
 void				ft_uvector_resize(t_uvector *v, unsigned size);
 void				ft_uvector_push(t_uvector *v, void *d);
 void				*ft_uvector_pop(t_uvector *v, void *item);
-void				*ft_uvector_get(t_uvector *v, unsigned i, char copy);
+void				*ft_uvector_get(t_uvector *v, unsigned i);
 
 #endif

@@ -169,7 +169,7 @@ static void obj_open(const char *path, t_scop *scop)
 	ft_uvector_init(&norm, sizeof(t_vec3));
 	obj_load(obj_file, &vert, &uv, &norm);
 	fclose(obj_file);
-	obj_normalize(&vert, &uv, &norm);
+	obj_normalize(&vert);
 	scop->vert_count = vert.length;
 	//t_vec3	tmp;
 	//t_vec2	tmp_uv;
@@ -270,7 +270,7 @@ int		main(void)
 	glGenVertexArrays(1, &scop->vao_id);
 	// Enable VAO
 	glBindVertexArray(scop->vao_id);
-	obj_open("assets/42.obj", scop);
+	obj_open("assets/teapot.obj", scop);
 	MAT_ROW(scop->proj.m[0], 2.39012, 0, 0, 0);
 	MAT_ROW(scop->proj.m[1], 0, 1.79259, 0, 0);
 	MAT_ROW(scop->proj.m[2], 0, 0, -1.002, -1);

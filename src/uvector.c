@@ -56,15 +56,9 @@ void				*ft_uvector_pop(t_uvector *v, void *item)
 	return (item);
 }
 
-void				*ft_uvector_get(t_uvector *v, unsigned i, char copy)
+void				*ft_uvector_get(t_uvector *v, unsigned i)
 {
-	void *item;
-
 	if (i > v->length - 1)
 		return (NULL);
-	item = v->data + v->width * i;
-	if (copy)
-		item = malloc(v->width);
-		memcpy(item, v->data + v->width * i, v->width);
-	return (item);
+	return (v->data + v->width * i);
 }

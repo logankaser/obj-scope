@@ -22,8 +22,6 @@ void	main()
 
 	float cos_alpha = clamp(dot(E, R), 0.0000001, 1.0);
 
-	//float distance = length( LightPosition_worldspace - Position_worldspace);
-
-	c *=  max(abs(cos_theta), 0.15) + (vec3(1.0, 1.0, 1.0) * pow(cos_alpha, 9.0));
+	c *=  max(abs(cos_theta), 0.1) + (vec3(1.0, 1.0, 1.0) * pow(cos_alpha, 9.0));
 	color = vec4(c, 1.0);
 }

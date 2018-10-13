@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/* *d************************************************************************ */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   obj_vertex_data.c                                  :+:      :+:    :+:   */
@@ -42,10 +42,10 @@ void		parse_normal(const char *line, t_uvector *out)
 	ft_uvector_push(out, &tmp);
 }
 
-void		trianglate(t_uvector *faces)
+static void	trianglate(t_uvector *faces)
 {
-	ft_uvector_push(faces, ft_uvector_get(faces, faces->length - 2, 0));
-	ft_uvector_push(faces, ft_uvector_get(faces, faces->length - 5, 0));
+	ft_uvector_push(faces, ft_uvector_get(faces, faces->length - 2));
+	ft_uvector_push(faces, ft_uvector_get(faces, faces->length - 5));
 }
 
 /*
@@ -59,7 +59,7 @@ void		trianglate(t_uvector *faces)
 
 #define VCOUNT i[3]
 
-static void	parse_face(char *line, t_uvector *faces, t_uvector vertex[3])
+void		parse_face(char *line, t_uvector *faces, t_uvector vertex[3])
 {
 	char		*tok;
 	char		*tok_save;
@@ -85,36 +85,5 @@ static void	parse_face(char *line, t_uvector *faces, t_uvector vertex[3])
 		if (++VCOUNT == 4)
 			trianglate(faces);
 		tok = strtok_r(NULL, " \n", &tok_save);
-	}
-}
-
-/*
-** fseek line is to allow the next parsing function to read from where
-** this function stopped being able to parse, instead of losing that line
-** vertex order is position, uv, normal.
-*/
-
-void		obj_read(FILE *obj_file, t_uvector vertex[3], t_uvector *faces)
-{
-	char	*line;
-	size_t	n;
-
-	ft_uvector_init(vertex, sizeof(t_vec3));
-	ft_uvector_init(vertex + 1, sizeof(t_vec2));
-	ft_uvector_init(vertex + 2, sizeof(t_vec3));
-	ft_uvector_init(faces, sizeof(int) * 3);
-	line = NULL;
-	while (getline(&line, &n, obj_file) > 0)
-	{
-		if (!strncmp(line, "v ", 2))
-			parse_vertex(line, vertex);
-		else if (!strncmp(line, "vt ", 3))
-			parse_uv(line, vertex + 1);
-		else if (!strncmp(line, "vn ", 3))
-			parse_normal(line, vertex + 2);
-		else if (!strncmp(line, "f ", 2))
-			parse_face(line + 1, faces, vertex);
-		free(line);
-		line = NULL;
 	}
 }
