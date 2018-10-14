@@ -12,9 +12,9 @@
 
 NAME = index.js
 LIST = uvector \
-matrix matrix_transform \
-vec vec_op \
-main obj_vertex_data obj_elements
+matrix matrix_transform shader \
+vec3 vec3_op vec2_op \
+main obj_vertex_data obj_elements input
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -28,8 +28,7 @@ CPPFLAGS = -Wall -Wextra -Werror \
 -O3 -s USE_WEBGL2=1 -s ALLOW_MEMORY_GROWTH=1 -s WASM=1 \
  $(INCLUDES)
 
-LDFLAGS = --llvm-lto 3 -O3 --preload-file assets --post-js src/texture.js
-#LDFLAGS = --preload-file assets --post-js src/texture.js
+LDFLAGS = --llvm-lto 3 -O3 --preload-file assets --post-js src/drop.js
 
 all: $(OBJ_DIR) $(NAME)
 

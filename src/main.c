@@ -26,192 +26,35 @@
 #include "obj.h"
 #include "scop.h"
 
-void	render(t_scop *scop)
+static void	main_loop(t_scop *scop)
 {
+	handle_input(scop);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	MAT_ROW(scop->trans.m[0], 1, 0, 0, 0);
 	MAT_ROW(scop->trans.m[1], 0, 1, 0, 0);
 	MAT_ROW(scop->trans.m[2], 0, 0, 1, 0);
 	MAT_ROW(scop->trans.m[3], 0, 0, 0, 1);
-	if (scop->key['w'])
-		scop->rot.x += 0.5;
-	if (scop->key['s'])
-		scop->rot.x -= 0.5;
-	if (scop->key['a'])
-		scop->rot.y += 0.5;
-	if (scop->key['d'])
-		scop->rot.y -= 0.5;
-	if (scop->key['q'])
-		scop->rot.z -= 0.5;
-	if (scop->key['e'])
-		scop->rot.z += 0.5;
 	mat_rotate_x(scop->rot.x, &scop->trans);
 	mat_rotate_y(scop->rot.y, &scop->trans);
 	mat_rotate_z(scop->rot.z, &scop->trans);
-
-	if (scop->key['j'])
-		scop->pos.x -= 0.01;
-	if (scop->key['l'])
-		scop->pos.x += 0.01;
-	if (scop->key['i'])
-		scop->pos.y += 0.01;
-	if (scop->key['k'])
-		scop->pos.y -= 0.01;
-	if (scop->key['='])
-		scop->pos.z += 0.01;
-	if (scop->key['-'])
-		scop->pos.z -= 0.01;
-	mat_translate(scop->pos.x, scop->pos.y, scop->pos.z - 2.0, &scop->trans);
-
+	mat_translate(scop->pos.x, scop->pos.y, scop->pos.z - 4.0, &scop->trans);
 	glUniformMatrix4fv(scop->trans_id, 1, GL_FALSE, (GLfloat*)scop->trans.m);
 	mat_x_mat_res(&scop->proj, &scop->trans, &scop->tp);
 	glUniformMatrix4fv(scop->tp_id, 1, GL_FALSE, (GLfloat*)scop->tp.m);
 	glDrawArrays(GL_TRIANGLES, 0, scop->vert_count);
 }
 
-void	validate_shader(GLuint shader)
+static void	default_texture(t_scop *scop)
 {
-	GLint	success;
-	GLint	log_size;
-	char	*log;
-
-	success = 0;
-	log_size = 0;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-	if (success == GL_FALSE)
-	{
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_size);
-		log = malloc(log_size);
-		glGetShaderInfoLog(shader, log_size, NULL, log);
-		printf("%s\n", log);
-		free(log);
-		exit(1);
-	}
-}
-
-GLuint	compile_shader(const char *path, GLenum shader_type)
-{
-	size_t	size;
-	FILE	*shader_file;
-	char	*shader_str;
-	GLuint	id;
-
-	if ((shader_file = fopen(path, "r")) == NULL)
-	{
-		perror("File error");
-		exit(1);
-	}
-	fseek(shader_file, 0L, SEEK_END);
-	size = ftell(shader_file);
-	rewind(shader_file);
-	shader_str = malloc(size);
-	fread(shader_str, 1, size + 1, shader_file);
-	shader_str[size] = '\0';
-	fclose(shader_file);
-	id = glCreateShader(shader_type);
-	glShaderSource(id, 1, (const GLchar**)&shader_str, NULL);
-	glCompileShader(id);
-	free(shader_str);
-	validate_shader(id);
-	return (id);
-}
-
-void	validate_program(GLuint program_id)
-{
-	GLint	success;
-	GLint	log_size;
-	char	*log;
-
-	glGetProgramiv(program_id, GL_LINK_STATUS, &success);
-	glGetProgramiv(program_id, GL_INFO_LOG_LENGTH, &log_size);
-	if (success == GL_FALSE)
-	{
-		glGetShaderiv(program_id, GL_INFO_LOG_LENGTH, &log_size);
-		log = malloc(log_size);
-		glGetProgramInfoLog(program_id, log_size, NULL, log);
-		printf("%s\n", log);
-		exit(1);
-	}
-}
-
-GLuint	make_program(const char *frag, const char *vert)
-{
-	GLuint frag_id;
-	GLuint vert_id;
-	GLuint program_id;
-
-	frag_id = compile_shader(frag, GL_FRAGMENT_SHADER);
-	vert_id = compile_shader(vert, GL_VERTEX_SHADER);
-	program_id = glCreateProgram();
-	glAttachShader(program_id, vert_id);
-	glAttachShader(program_id, frag_id);
-	glLinkProgram(program_id);
-	validate_program(program_id);
-	glDetachShader(program_id, vert_id);
-	glDetachShader(program_id, frag_id);	
-	glDeleteShader(vert_id);
-	glDeleteShader(frag_id);
-	return (program_id);
-}
-
-static void obj_open(const char *path, t_scop *scop)
-{
-	t_uvector	vert;
-	t_uvector	uv;
-	t_uvector	norm;
-	FILE		*obj_file;
-	GLuint		buffer_id[3];
-
-	if ((obj_file = fopen(path, "r")) == NULL)
-		perror("File error");
-	ft_uvector_init(&vert, sizeof(t_vec3));
-	ft_uvector_init(&uv, sizeof(t_vec2));
-	ft_uvector_init(&norm, sizeof(t_vec3));
-	obj_load(obj_file, &vert, &uv, &norm);
-	fclose(obj_file);
-	obj_normalize(&vert);
-	scop->vert_count = vert.length;
-	//t_vec3	tmp;
-	//t_vec2	tmp_uv;
-	//for (unsigned i = 0; i < norm.length; ++i)
-	//{
-	//	tmp = *(t_vec3*)ft_uvector_get(&norm, i, 0);
-	//	printf("v(%+.3f,%+.3f,%+.3f)\n", tmp.x, tmp.y, tmp.z);
-	//}
-	//while (ft_uvector_pop(&uv, &tmp_uv))
-	//	printf("u(%+.3f,%+.3f) ", tmp_uv.x, tmp_uv.y);
-	//while (ft_uvector_pop(&norm, &tmp))
-	//	printf("n(%+.3f,%+.3f,%+.3f) ", tmp.x, tmp.y, tmp.z);
-	//printf("\n");
-
-	glGenBuffers(3, buffer_id);
-
-	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[0]);
-	glBufferData(GL_ARRAY_BUFFER, vert.length * 3 * sizeof(float),
-	vert.data, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[1]);
-	glBufferData(GL_ARRAY_BUFFER, uv.length * 2 * sizeof(float),
-	uv.data, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[2]);
-	glBufferData(GL_ARRAY_BUFFER, norm.length * 3 * sizeof(float),
-	norm.data, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	static uint8_t data[16] = {
+		0, 255, 100, 255,
+		0, 255, 100, 255,
+		0, 255, 100, 255,
+		0, 255, 100, 255
+	};
 
 	glGenTextures(1, &scop->tex_id);
 	glBindTexture(GL_TEXTURE_2D, scop->tex_id);
-	uint8_t data[16] = {
-		255, 255, 100, 255,
-		255, 255, 100, 255,
-		42, 255, 100, 255,
-		47, 255, 109, 255
-	};
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0,
 		GL_RGBA, GL_UNSIGNED_BYTE, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -220,69 +63,82 @@ static void obj_open(const char *path, t_scop *scop)
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-EM_BOOL	key_down(int type, const EmscriptenKeyboardEvent* key, void* data)
-{
-	t_scop *scop;
+#define GL_VEC3 (3 * sizeof(GLfloat))
+#define GL_VEC2 (3 * sizeof(GLfloat))
 
-	scop = data;
-	(void)type;
-	scop->key[(uint8_t)key->key[0]] = 1;
-	return 0;
+static void	obj_open(FILE *obj_file, t_scop *scop)
+{
+	t_uvector	vt;
+	t_uvector	uv;
+	t_uvector	nl;
+	GLuint		buffer_id[3];
+
+	obj_load(obj_file, &vt, &uv, &nl);
+	obj_normalize(&vt);
+	scop->vert_count = vt.length;
+	glGenBuffers(3, buffer_id);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[0]);
+	glBufferData(GL_ARRAY_BUFFER, vt.length * GL_VEC3, vt.data, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[1]);
+	glBufferData(GL_ARRAY_BUFFER, uv.length * GL_VEC2, uv.data, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[2]);
+	glBufferData(GL_ARRAY_BUFFER, nl.length * GL_VEC3, nl.data, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	free(vt.data);
+	free(uv.data);
+	free(nl.data);
 }
 
-EM_BOOL	key_up(int type, const EmscriptenKeyboardEvent* key, void* data)
+static void	init_opengl(t_scop *scop)
 {
-	t_scop *scop;
+	EmscriptenWebGLContextAttributes	attrs;
+	EMSCRIPTEN_WEBGL_CONTEXT_HANDLE		context;
+	GLuint								prog;
 
-	scop = data;
-	(void)type;
-	scop->key[(uint8_t)key->key[0]] = 0;
-	return 0;
-}
-
-int		main(void)
-{
-	EmscriptenWebGLContextAttributes attrs;
 	emscripten_webgl_init_context_attributes(&attrs);
-	attrs.depth = 1;
-	attrs.stencil = 1;
-	attrs.antialias = 1;
 	attrs.majorVersion = 2;
-	attrs.minorVersion = 0;
-
-	EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("canvas", &attrs);
+	context = emscripten_webgl_create_context("canvas", &attrs);
 	emscripten_webgl_make_context_current(context);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
 	glDepthFunc(GL_LESS);
-	glClearColor(0.1,  0.1,  0.12,  1);
-	GLuint prog = make_program("assets/frag.glsl", "assets/vert.glsl");
+	glClearColor(0.1, 0.1, 0.12, 1);
+	prog = make_program("assets/scop.frag", "assets/scop.vert");
 	glUseProgram(prog);
-
-	t_scop *scop = calloc(1, sizeof(t_scop));
 	scop->tp_id = glGetUniformLocation(prog, "TP");
 	scop->trans_id = glGetUniformLocation(prog, "T");
 	scop->proj.order = 4;
 	scop->trans.order = 4;
 	scop->tp.order = 4;
+	default_texture(scop);
+}
 
-	// VAO
+int			main(void)
+{
+	FILE								*obj_file;
+	t_scop								*scop;
+
+	scop = calloc(1, sizeof(t_scop));
+	init_opengl(scop);
 	glGenVertexArrays(1, &scop->vao_id);
-	// Enable VAO
 	glBindVertexArray(scop->vao_id);
-	obj_open("assets/teapot.obj", scop);
+	if ((obj_file = fopen("assets/42.obj", "r")) == NULL)
+		perror("File error");
+	obj_open(obj_file, scop);
+	fclose(obj_file);
 	MAT_ROW(scop->proj.m[0], 2.39012, 0, 0, 0);
 	MAT_ROW(scop->proj.m[1], 0, 1.79259, 0, 0);
 	MAT_ROW(scop->proj.m[2], 0, 0, -1.002, -1);
 	MAT_ROW(scop->proj.m[3], 0, 0, -0.2002, 0);
-
 	MAT_ROW(scop->trans.m[0], 1, 0, 0, 0);
 	MAT_ROW(scop->trans.m[1], 0, 1, 0, 0);
 	MAT_ROW(scop->trans.m[2], 0, 0, 1, 0);
 	MAT_ROW(scop->trans.m[3], 0, 0, 0, 1);
-	memcpy(&scop->tp.m, &scop->proj.m, sizeof(float) * 16);
-	emscripten_set_main_loop_arg((em_arg_callback_func)render, scop, -1, 0);
-
+	emscripten_set_main_loop_arg((em_arg_callback_func)main_loop, scop, -1, 0);
 	emscripten_set_keydown_callback("body", scop, 0, key_down);
 	emscripten_set_keyup_callback("body", scop, 0, key_up);
 	return (0);

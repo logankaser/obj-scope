@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wrapper.h                                          :+:      :+:    :+:   */
+/*   matrix.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkaser <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 11:03:56 by lkaser            #+#    #+#             */
-/*   Updated: 2018/02/15 21:06:56 by lkaser           ###   ########.fr       */
+/*   Updated: 2018/10/13 17:40:06 by lkaser           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef struct		s_mat
 }					t_mat;
 
 t_mat				*mat_new(int order, char id);
-void				mat_del(t_mat *m);
 t_mat				*mat_x_mat(const t_mat *a, const t_mat *b);
 void				mat_x_mat_res(
 	const t_mat *b, const t_mat *a, t_mat *product);
@@ -55,6 +54,12 @@ t_vec3				dir3_x_mat(t_vec3 v, t_mat *m);
 float				vec3_length(t_vec3 *v);
 void				vec3_normalize(t_vec3 *v);
 t_vec3				vec3_cross_product(t_vec3 a, t_vec3 b);
+
+void				vec2_minus_vec2(t_vec2 *a, t_vec2 *b);
+void				vec2_plus_vec2(t_vec2 *a, t_vec2 *b);
+void				vec2_mult(t_vec2 *v, float m);
+void				vec2_div(t_vec2 *v, float d);
+float				vec2_dot(t_vec2 *a, t_vec2 *b);
 
 void				vec3_minus_vec3(t_vec3 *a, t_vec3 *b);
 void				vec3_plus_vec3(t_vec3 *a, t_vec3 *b);

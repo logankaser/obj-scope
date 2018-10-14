@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrix_transform.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkaser <lkaser@student.42.us.org>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/13 19:33:28 by lkaser            #+#    #+#             */
+/*   Updated: 2018/10/13 19:33:30 by lkaser           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,15 +17,7 @@
 
 #include "matrix.h"
 
-void matrix_print(t_mat *m)
-{
-	printf("%+.3f, %+.3f, %+.3f, %+.3f\n", m->m[0][0], m->m[0][1], m->m[0][2], m->m[0][3]);
-	printf("%+.3f, %+.3f, %+.3f, %+.3f\n", m->m[1][0], m->m[1][1], m->m[1][2], m->m[1][3]);
-	printf("%+.3f, %+.3f, %+.3f, %+.3f\n", m->m[2][0], m->m[2][1], m->m[2][2], m->m[2][3]);
-	printf("%+.3f, %+.3f, %+.3f, %+.3f\n\n", m->m[3][0], m->m[3][1], m->m[3][2], m->m[3][3]);
-}
-
-void mat_translate(float x, float y, float z, t_mat *mat)
+void	mat_translate(float x, float y, float z, t_mat *mat)
 {
 	t_mat	trans;
 	t_mat	res;
@@ -28,7 +32,7 @@ void mat_translate(float x, float y, float z, t_mat *mat)
 	memcpy(&mat->m, &res.m, sizeof(float) * 16);
 }
 
-void mat_rotate_x(float degree, t_mat *mat)
+void	mat_rotate_x(float degree, t_mat *mat)
 {
 	t_mat	rotate;
 	t_mat	res;
@@ -45,7 +49,7 @@ void mat_rotate_x(float degree, t_mat *mat)
 	memcpy(&mat->m, &res.m, sizeof(float) * 16);
 }
 
-void mat_rotate_y(float degree, t_mat *mat)
+void	mat_rotate_y(float degree, t_mat *mat)
 {
 	t_mat	rotate;
 	t_mat	res;
@@ -62,7 +66,7 @@ void mat_rotate_y(float degree, t_mat *mat)
 	memcpy(&mat->m, &res.m, sizeof(float) * 16);
 }
 
-void mat_rotate_z(float degree, t_mat *mat)
+void	mat_rotate_z(float degree, t_mat *mat)
 {
 	t_mat	rotate;
 	t_mat	res;
@@ -78,4 +82,3 @@ void mat_rotate_z(float degree, t_mat *mat)
 	mat_x_mat_res(&rotate, mat, &res);
 	memcpy(&mat->m, &res.m, sizeof(float) * 16);
 }
-

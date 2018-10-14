@@ -10,6 +10,11 @@ out vec4 color;
 
 uniform sampler2D tex;
 
+vec3 f(vec3 i)
+{
+	return vec3(1.0) / (vec3(1.0) - pow(vec3(2.0), i));
+}
+
 void	main()
 {
 	vec3 c = texture(tex, uv).rgb;
@@ -22,6 +27,6 @@ void	main()
 
 	float cos_alpha = clamp(dot(E, R), 0.0000001, 1.0);
 
-	c *=  max(abs(cos_theta), 0.1) + (vec3(1.0, 1.0, 1.0) * pow(cos_alpha, 9.0));
+	c *=  max(cos_theta, 0.1) + vec3(pow(cos_alpha, 9.0));
 	color = vec4(c, 1.0);
 }

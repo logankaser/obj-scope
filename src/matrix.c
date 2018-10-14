@@ -33,17 +33,6 @@ t_mat		*mat_new(int order, char id)
 	return (new);
 }
 
-void		mat_del(t_mat *m)
-{
-	int		i;
-
-	i = -1;
-	while (++i < m->order)
-		free(m->m[i]);
-	free(m->m);
-	free(m);
-}
-
 t_mat		*mat_x_mat(const t_mat *b, const t_mat *a)
 {
 	int			i;
