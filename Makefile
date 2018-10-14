@@ -26,7 +26,7 @@ DEP = $(OBJ:%.bc=%.d)
 CC = emcc
 
 CPPFLAGS = -Wall -Wextra -Werror \
--O3 -s USE_WEBGL2=1 -s ALLOW_MEMORY_GROWTH=1 -s WASM=1 \
+-O3 -s USE_WEBGL2=1 -s WASM=1 \
  $(INCLUDES)
 
 LDFLAGS = --llvm-lto 3 -O3 --preload-file assets --post-js src/drop.js \
