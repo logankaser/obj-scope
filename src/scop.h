@@ -13,6 +13,8 @@
 #ifndef SCOP_H
 # define SCOP_H
 # include <GLES3/gl3.h>
+# include <emscripten.h>
+# include <emscripten/html5.h>
 # include "matrix.h"
 
 typedef struct	s_scop
@@ -21,7 +23,6 @@ typedef struct	s_scop
 	GLuint		trans_id;
 	GLuint		tex_id;
 	GLuint		vao_id;
-	unsigned	vert_count;
 	t_mat		proj;
 	t_mat		trans;
 	t_mat		tp;
@@ -39,5 +40,6 @@ void			validate_shader(GLuint shader);
 GLuint			compile_shader(const char *path, GLenum shader_type);
 void			validate_program(GLuint program_id);
 GLuint			make_program(const char *frag, const char *vert);
+void			obj_open(FILE *obj_file);
 
 #endif

@@ -26,6 +26,8 @@
 #include "obj.h"
 #include "scop.h"
 
+static unsigned vertex_count = 0;
+
 static void	main_loop(t_scop *scop)
 {
 	handle_input(scop);
@@ -41,7 +43,7 @@ static void	main_loop(t_scop *scop)
 	glUniformMatrix4fv(scop->trans_id, 1, GL_FALSE, (GLfloat*)scop->trans.m);
 	mat_x_mat_res(&scop->proj, &scop->trans, &scop->tp);
 	glUniformMatrix4fv(scop->tp_id, 1, GL_FALSE, (GLfloat*)scop->tp.m);
-	glDrawArrays(GL_TRIANGLES, 0, scop->vert_count);
+	glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 }
 
 static void	default_texture(t_scop *scop)
@@ -66,7 +68,7 @@ static void	default_texture(t_scop *scop)
 #define GL_VEC3 (3 * sizeof(GLfloat))
 #define GL_VEC2 (3 * sizeof(GLfloat))
 
-static void	obj_open(FILE *obj_file, t_scop *scop)
+void		obj_open(FILE *obj_file)
 {
 	t_uvector	vt;
 	t_uvector	uv;
@@ -75,7 +77,7 @@ static void	obj_open(FILE *obj_file, t_scop *scop)
 
 	obj_load(obj_file, &vt, &uv, &nl);
 	obj_normalize(&vt);
-	scop->vert_count = vt.length;
+	vertex_count = vt.length;
 	glGenBuffers(3, buffer_id);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[0]);
 	glBufferData(GL_ARRAY_BUFFER, vt.length * GL_VEC3, vt.data, GL_STATIC_DRAW);
@@ -128,7 +130,7 @@ int			main(void)
 	glBindVertexArray(scop->vao_id);
 	if ((obj_file = fopen("assets/42.obj", "r")) == NULL)
 		perror("File error");
-	obj_open(obj_file, scop);
+	obj_open(obj_file);
 	fclose(obj_file);
 	MAT_ROW(scop->proj.m[0], 2.39012, 0, 0, 0);
 	MAT_ROW(scop->proj.m[1], 0, 1.79259, 0, 0);
