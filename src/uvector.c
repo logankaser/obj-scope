@@ -58,7 +58,7 @@ void				*ft_uvector_pop(t_uvector *v, void *item)
 
 void				*ft_uvector_get(t_uvector *v, unsigned i)
 {
-	if (i > v->length - 1)
+	if (!v->length || i > v->length - 1)
 		return (NULL);
 	return (v->data + v->width * i);
 }

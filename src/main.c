@@ -26,7 +26,7 @@
 #include "obj.h"
 #include "scop.h"
 
-static unsigned vertex_count = 0;
+static unsigned g_vertex_count = 0;
 
 static void	main_loop(t_scop *scop)
 {
@@ -43,7 +43,7 @@ static void	main_loop(t_scop *scop)
 	glUniformMatrix4fv(scop->trans_id, 1, GL_FALSE, (GLfloat*)scop->trans.m);
 	mat_x_mat_res(&scop->proj, &scop->trans, &scop->tp);
 	glUniformMatrix4fv(scop->tp_id, 1, GL_FALSE, (GLfloat*)scop->tp.m);
-	glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+	glDrawArrays(GL_TRIANGLES, 0, g_vertex_count);
 }
 
 static void	default_texture(t_scop *scop)
@@ -77,7 +77,7 @@ void		obj_open(FILE *obj_file)
 
 	obj_load(obj_file, &vt, &uv, &nl);
 	obj_normalize(&vt);
-	vertex_count = vt.length;
+	g_vertex_count = vt.length;
 	glGenBuffers(3, buffer_id);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer_id[0]);
 	glBufferData(GL_ARRAY_BUFFER, vt.length * GL_VEC3, vt.data, GL_STATIC_DRAW);

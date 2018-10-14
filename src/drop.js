@@ -16,7 +16,7 @@ window.onload = function() {
 		{
 			const reader = new FileReader();
 			reader.onload = function(event) {
-				const array = new Uint8Array(event.target.result);
+				const array = new Int8Array(event.target.result);
 				Module.ccall("load_obj_from_js", "void", ["array", "number"], [array, array.length]);
 			};
 			const blob = e.dataTransfer.items[0].getAsFile();
